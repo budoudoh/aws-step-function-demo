@@ -1,0 +1,22 @@
+# Node
+node_modules/
+npm-debug.log*
+
+# TypeScript build output
+*.js
+*.js.map
+*.d.ts
+!jest.config.js
+
+# CDK
+cdk.out/
+.cdk.staging/
+
+# AWS credentials / env
+.env
+.env.*
+*.pem
+
+# OS
+.DS_Store
+Thumbs.db
