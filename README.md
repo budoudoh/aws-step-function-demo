@@ -36,7 +36,7 @@ step-demo/
 ├── lambdas/
 │   ├── alarm-handler.ts      # Registers alarm + wake-up check
 │   ├── calendar-check.ts     # First meeting of the day
-│   ├── weather-check.ts      # Hair-day complexity score
+│   ├── weather-check.ts      # Outfit complexity score
 │   ├── weekend-check.ts      # Is it a weekend?
 │   ├── excuse-scorer.ts      # Scores a single excuse (runs in Map)
 │   ├── snooze-calculator.ts  # Calculates the optimal snooze window
@@ -107,7 +107,7 @@ START
   ↓
 ⚡ PARALLEL ASSESSMENT           [Parallel]
    ├── 📅 Check Calendar
-   ├── 🌤  Check Weather / Hair Score
+   ├── 🌤  Check Weather / Outfit Score
    └── 📆 Check Weekend
   ↓
 🔀 IS IT WEEKEND?                [Choice]

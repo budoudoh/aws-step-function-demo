@@ -6,7 +6,7 @@
  *
  * Factors:
  *  - Calendar buffer: fewer minutes to first meeting → shorter snooze
- *  - Hair complexity: high score → longer prep time needed → shorter snooze
+ *  - Outfit complexity: high score → longer prep time needed → shorter snooze
  *  - Best viable excuse score: higher → more snooze headroom
  *
  * The snoozeSeconds value is used directly by the subsequent Wait state.
@@ -17,7 +17,7 @@
 export interface SnoozeCalculatorInput {
   assessments: [
     { firstMeeting: string | null; bufferMinutes: number; isCritical: boolean },  // [0] calendar
-    { hairComplexityScore: number; condition: string },                             // [1] weather
+    { outfitComplexityScore: number; condition: string },                           // [1] weather
     { isWeekend: boolean; dayOfWeek: string },                                      // [2] weekend
   ];
   scoredExcuses: Array<{ id: string; score: number; viable: boolean }>;
@@ -29,7 +29,7 @@ export interface SnoozeCalculatorOutput {
   snoozeReason: string;
   breakdown: {
     calendarPenalty: number;
-    hairPenalty:     number;
+    outfitPenalty:     number;
     excuseBonus:     number;
     baseSnooze:      number;
   };
@@ -48,8 +48,8 @@ export const handler = async (event: SnoozeCalculatorInput): Promise<SnoozeCalcu
     ? Math.min(6, Math.max(0, Math.floor((45 - calendar.bufferMinutes) / 7.5)))
     : 0;
 
-  // Hair penalty: every 2 complexity points = lose 1 minute
-  const hairPenalty = Math.floor(weather.hairComplexityScore / 2);
+  // Outfit penalty: every 2 complexity points = lose 1 minute
+  const outfitPenalty = Math.floor(weather.outfitComplexityScore / 2);
 
   // Best viable excuse bonus: up to +5 minutes
   const bestExcuse = event.scoredExcuses
@@ -59,7 +59,7 @@ export const handler = async (event: SnoozeCalculatorInput): Promise<SnoozeCalcu
     ? Math.floor((bestExcuse.score - 60) / 8)  // 0–5 bonus
     : 0;
 
-  const totalMinutes = Math.max(1, BASE_MINUTES - calendarPenalty - hairPenalty + excuseBonus);
+  const totalMinutes = Math.max(1, BASE_MINUTES - calendarPenalty - outfitPenalty + excuseBonus);
 
   // Scale down to seconds for the demo
   const snoozeSeconds = Math.max(3, Math.round(totalMinutes * 60 * DEMO_SCALE));
@@ -74,6 +74,6 @@ export const handler = async (event: SnoozeCalculatorInput): Promise<SnoozeCalcu
     snoozeSeconds,
     snoozeMinutes: totalMinutes,
     snoozeReason: reason,
-    breakdown: { baseSnooze: BASE_MINUTES, calendarPenalty, hairPenalty, excuseBonus },
+    breakdown: { baseSnooze: BASE_MINUTES, calendarPenalty, outfitPenalty, excuseBonus },
   };
 };

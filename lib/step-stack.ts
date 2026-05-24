@@ -43,7 +43,7 @@ export class StepStack extends cdk.Stack {
       entry: path.join(__dirname, "../lambdas/weather-check.ts"),
       handler: "handler",
       ...lambdaDefaults,
-      description: "S.T.E.P. — Rates hair-day complexity based on weather conditions",
+      description: "S.T.E.P. — Rates outfit complexity based on weather conditions",
     });
 
     const weekendCheck = new NodejsFunction(this, "WeekendCheck", {
@@ -93,7 +93,7 @@ export class StepStack extends cdk.Stack {
 
     const checkWeather = new tasks.LambdaInvoke(this, "CheckWeather", {
       lambdaFunction: weatherCheck,
-      resultSelector: { "hairComplexityScore.$": "$.Payload.hairComplexityScore", "condition.$": "$.Payload.condition" },
+      resultSelector: { "outfitComplexityScore.$": "$.Payload.outfitComplexityScore", "condition.$": "$.Payload.condition" },
     });
 
     const checkWeekend = new tasks.LambdaInvoke(this, "CheckWeekend", {
