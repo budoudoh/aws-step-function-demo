@@ -126,7 +126,7 @@ export class StepStack extends cdk.Stack {
 
     const mapExcuses = new sfn.Map(this, "MapExcuses", {
       comment: "Evaluate each excuse in the inventory for viability",
-      itemsPath: "$.excuses",
+      itemsPath: "$.alarmResult.body.excuses",
       resultPath: "$.scoredExcuses",
       maxConcurrency: 5,
     });
